@@ -83,6 +83,17 @@ input{
   cursor:pointer;
 }
 
+.forgot-btn{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:0;
+  background:none;
+  color:#2563eb;
+  cursor:pointer;
+  font-weight:bold;
+}
+
 #adminPanel{
   display:none;
 }
@@ -222,6 +233,14 @@ id="loginBtn"
 Login
 </button>
 
+<button
+type="button"
+class="forgot-btn"
+id="forgotPasswordBtn"
+>
+Forgot Password?
+</button>
+
 <div
 class="error"
 id="loginError"
@@ -240,7 +259,6 @@ id="adminPanel"
 <h1 style="margin-bottom:25px;">
 Admin Dashboard
 </h1>
-
 
 <div class="stats">
 
@@ -311,6 +329,7 @@ from
 import {
 getAuth,
 signInWithEmailAndPassword,
+sendPasswordResetEmail,
 signOut,
 onAuthStateChanged
 }
@@ -381,7 +400,7 @@ const errorBox =
 document
 .getElementById("loginError");
 
-
+errorBox.className="error";
 errorBox.innerText="";
 
 
@@ -403,7 +422,6 @@ auth,
 email,
 password
 );
-
 
 const uid =
 credential.user.uid;
@@ -459,6 +477,84 @@ errorBox.innerText=
 };
 
 
+/* FORGOT PASSWORD */
+
+document
+.getElementById("forgotPasswordBtn")
+.onclick = async function(){
+
+const email =
+document
+.getElementById("adminEmail")
+.value
+.trim();
+
+const errorBox =
+document
+.getElementById("loginError");
+
+errorBox.className="error";
+errorBox.innerText="";
+
+
+if(!email){
+
+errorBox.innerText=
+"Please enter your admin email first.";
+
+return;
+
+}
+
+
+try{
+
+await sendPasswordResetEmail(
+auth,
+email
+);
+
+errorBox.className="success";
+
+errorBox.innerText=
+"Password reset email sent. Please check your email.";
+
+}catch(error){
+
+console.error(error);
+
+errorBox.className="error";
+
+if(
+error.code ===
+"auth/user-not-found"
+){
+
+errorBox.innerText=
+"No account found with this email.";
+
+}
+else if(
+error.code ===
+"auth/invalid-email"
+){
+
+errorBox.innerText=
+"Please enter a valid email.";
+
+}
+else{
+
+errorBox.innerText=
+"Could not send reset email. Please try again.";
+
+}
+
+}
+
+};
+
+
 /* LOAD USERS */
 
 async function loadUsers(){
@@ -470,9 +566,7 @@ table.innerHTML="";
 
 
 let totalUsers=0;
-
 let activePlans=0;
-
 let totalTasks=0;
 
 
@@ -551,7 +645,6 @@ value="${Number(data.tasks || 0)}"
 
 <button
 class="save-btn"
-data-uid="${userDoc.id}"
 >
 Save
 </button>
@@ -632,7 +725,6 @@ document
 .value
 );
 
-
 const tasks =
 Number(
 document
@@ -643,7 +735,9 @@ document
 
 if(tasks < 0 || tasks > 10){
 
-alert("Tasks must be between 0 and 10.");
+alert(
+"Tasks must be between 0 and 10."
+);
 
 return;
 
@@ -671,7 +765,9 @@ merge:true
 );
 
 
-alert("User updated successfully!");
+alert(
+"User updated successfully!"
+);
 
 loadUsers();
 
