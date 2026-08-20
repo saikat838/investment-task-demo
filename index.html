@@ -192,86 +192,7 @@ document.getElementById("register").classList.add("hidden");
 document.getElementById("login").classList.remove("hidden");
 goTo("login");
 }
-
-function register(){
-
-let name=document.getElementById("regName").value.trim();
-let email=document.getElementById("regEmail").value.trim();
-let password=document.getElementById("regPassword").value;
-
-if(!name || !email || !password){
-alert("Please fill in all fields.");
-return;
-}
-
-user={name,email,password,plan:0,tasks:0};
-
-localStorage.setItem("demoUser",JSON.stringify(user));
-
-alert("Account created successfully!");
-
-loginUser();
-}
-
-function login(){
-
-let email=document.getElementById("loginEmail").value.trim();
-let password=document.getElementById("loginPassword").value;
-
-let saved=localStorage.getItem("demoUser");
-
-if(!saved){
-alert("No demo account found. Please register first.");
-return;
-}
-
-let data=JSON.parse(saved);
-
-if(data.email!==email || data.password!==password){
-alert("Incorrect email or password.");
-return;
-}
-
-user=data;
-loginUser();
-}
-
-function loginUser(){
-
-document.getElementById("userName").innerText=user.name;
-document.getElementById("loginNav").innerText="Logout";
-document.getElementById("loginNav").onclick=logout;
-
-if(user.plan){
-selectedPlan=user.plan;
-completed=user.tasks;
-renderTasks();
-}
-
-goTo("dashboard");
-}
-
-function logout(){
-
-user=null;
-selectedPlan=0;
-completed=0;
-
-document.getElementById("userName").innerText="Guest";
-document.getElementById("currentPlan").innerText="None";
-document.getElementById("taskCount").innerText="0 / 10";
-document.getElementById("tasks").innerHTML="";
-document.getElementById("progressBar").style.width="0%";
-document.getElementById("verifyBox").style.display="none";
-
-document.getElementById("loginNav").innerText="Login";
-document.getElementById("loginNav").onclick=function(){
 goTo("login");
-};
-
-goTo("login");
-}
-
 function selectPlan(plan){
 
 if(!user){
@@ -437,6 +358,186 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 console.log("Firebase connected successfully");
+  window.register = async function(){
+
+  const name = document.getElementById("regName").value.trim();
+  const email = document.getElementById("regEmail").value.trim();
+  const password = document.getElementById("regPassword").value;
+
+  if(!name || !email || !password){
+    alert("Please fill in all fields.");
+    return;
+  }
+
+  if(password.length < 6){
+    alert("Password must be at least 6 characters.");
+    return;
+  }
+
+  try{
+
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const firebaseUser = userCredential.user;
+
+    await setDoc(doc(db, "users", firebaseUser.uid), {
+      name: name,
+      email: email,
+      plan: 0,
+      tasks: 0,
+      createdAt: new Date().toISOString()
+    });
+
+    user = {
+      uid: firebaseUser.uid,
+      name: name,
+      email: email,
+      plan: 0,
+      tasks: 0
+    };
+
+    document.getElementById("userName").innerText = name;
+
+    alert("Account created successfully!");
+
+    showLogin();
+
+  }catch(error){
+
+    console.error(error);
+
+    if(error.code === "auth/email-already-in-use"){
+      alert("This email is already registered.");
+    }else if(error.code === "auth/invalid-email"){
+      alert("Please enter a valid email.");
+    }else{
+      alert("Registration failed: " + error.message);
+    }
+
+  }
+
+};
+
+
+window.login = async function(){
+
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+
+  if(!email || !password){
+    alert("Please enter email and password.");
+    return;
+  }
+
+  try{
+
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const firebaseUser = userCredential.user;
+
+    const userDoc = await getDoc(
+      doc(db, "users", firebaseUser.uid)
+    );
+
+    if(userDoc.exists()){
+
+      const data = userDoc.data();
+
+      user = {
+        uid: firebaseUser.uid,
+        name: data.name || "User",
+        email: firebaseUser.email,
+        plan: data.plan || 0,
+        tasks: data.tasks || 0
+      };
+
+      selectedPlan = user.plan;
+      completed = user.tasks;
+
+    }else{
+
+      user = {
+        uid: firebaseUser.uid,
+        name: "User",
+        email: firebaseUser.email,
+        plan: 0,
+        tasks: 0
+      };
+
+      selectedPlan = 0;
+      completed = 0;
+    }
+
+    document.getElementById("userName").innerText = user.name;
+
+    document.getElementById("loginNav").innerText = "Logout";
+    document.getElementById("loginNav").onclick = window.logout;
+
+    if(selectedPlan){
+      renderTasks();
+    }
+
+    alert("Login successful!");
+
+    goTo("dashboard");
+
+  }catch(error){
+
+    console.error(error);
+
+    if(error.code === "auth/invalid-credential"){
+      alert("Incorrect email or password.");
+    }else if(error.code === "auth/user-not-found"){
+      alert("No account found with this email.");
+    }else{
+      alert("Login failed: " + error.message);
+    }
+
+  }
+
+};
+
+
+window.logout = async function(){
+
+  try{
+
+    await signOut(auth);
+
+    user = null;
+    selectedPlan = 0;
+    completed = 0;
+
+    document.getElementById("userName").innerText = "Guest";
+    document.getElementById("currentPlan").innerText = "None";
+    document.getElementById("taskCount").innerText = "0 / 10";
+    document.getElementById("tasks").innerHTML = "";
+    document.getElementById("progressBar").style.width = "0%";
+    document.getElementById("verifyBox").style.display = "none";
+
+    document.getElementById("loginNav").innerText = "Login";
+    document.getElementById("loginNav").onclick = function(){
+      goTo("login");
+    };
+
+    goTo("login");
+
+  }catch(error){
+
+    console.error(error);
+    alert("Logout failed.");
+
+  }
+
+};
 </script>
 </body>
 </html>
