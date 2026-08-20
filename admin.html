@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,12 +64,36 @@ header{
   margin-bottom:25px;
 }
 
+.input-group{
+  position:relative;
+}
+
+.input-group input{
+  padding-right:50px;
+}
+
 input{
   width:100%;
   padding:13px;
   margin:8px 0;
   border:1px solid #ddd;
   border-radius:7px;
+  outline:none;
+}
+
+input:focus{
+  border-color:#2563eb;
+}
+
+.show-password{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  border:0;
+  background:none;
+  cursor:pointer;
+  font-size:20px;
 }
 
 .login-btn{
@@ -81,6 +106,10 @@ input{
   color:white;
   font-weight:bold;
   cursor:pointer;
+}
+
+.login-btn:hover{
+  background:#1d4ed8;
 }
 
 .forgot-btn{
@@ -163,12 +192,20 @@ th{
   color:#dc2626;
   text-align:center;
   margin-top:12px;
+  line-height:1.5;
 }
 
 .success{
   color:#16a34a;
   text-align:center;
   margin-top:12px;
+  line-height:1.5;
+}
+
+.loading{
+  text-align:center;
+  padding:20px;
+  color:#666;
 }
 
 @media(max-width:700px){
@@ -205,7 +242,7 @@ Logout
 </header>
 
 
-<!-- ADMIN LOGIN -->
+<!-- LOGIN -->
 
 <div
 class="login-box"
@@ -218,13 +255,27 @@ id="loginBox"
 id="adminEmail"
 type="email"
 placeholder="Admin Email"
+autocomplete="email"
 >
+
+<div class="input-group">
 
 <input
 id="adminPassword"
 type="password"
 placeholder="Password"
+autocomplete="current-password"
 >
+
+<button
+type="button"
+class="show-password"
+id="showPassword"
+>
+👁️
+</button>
+
+</div>
 
 <button
 class="login-btn"
@@ -293,13 +344,9 @@ Users
 <tr>
 
 <th>Name</th>
-
 <th>Email</th>
-
 <th>Plan</th>
-
 <th>Tasks</th>
-
 <th>Action</th>
 
 </tr>
@@ -349,6 +396,8 @@ from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 
+/* FIREBASE CONFIG */
+
 const firebaseConfig = {
 
 apiKey:"AIzaSyAlAbRIsYXtc1EaYCC4adJ3WAHSL70w34I",
@@ -378,6 +427,113 @@ const db =
 getFirestore(app);
 
 
+/* SHOW / HIDE PASSWORD */
+
+document
+.getElementById("showPassword")
+.onclick = function(){
+
+const passwordInput =
+document.getElementById("adminPassword");
+
+if(passwordInput.type === "password"){
+
+passwordInput.type = "text";
+
+this.innerText = "🙈";
+
+}else{
+
+passwordInput.type = "password";
+
+this.innerText = "👁️";
+
+}
+
+};
+
+
+/* ERROR MESSAGE */
+
+function showError(message){
+
+const errorBox =
+document.getElementById("loginError");
+
+errorBox.className = "error";
+
+errorBox.innerText = message;
+
+}
+
+
+/* SUCCESS MESSAGE */
+
+function showSuccess(message){
+
+const errorBox =
+document.getElementById("loginError");
+
+errorBox.className = "success";
+
+errorBox.innerText = message;
+
+}
+
+
+/* FIREBASE ERROR */
+
+function firebaseError(error){
+
+console.error(
+"Firebase Error:",
+error
+);
+
+switch(error.code){
+
+case "auth/invalid-credential":
+
+return "❌ Email অথবা Password ভুল।";
+
+case "auth/invalid-email":
+
+return "❌ Email address সঠিক নয়।";
+
+case "auth/user-not-found":
+
+return "❌ এই Email দিয়ে কোনো account পাওয়া যায়নি।";
+
+case "auth/wrong-password":
+
+return "❌ Password ভুল।";
+
+case "auth/user-disabled":
+
+return "❌ এই account disabled করা হয়েছে।";
+
+case "auth/too-many-requests":
+
+return "⚠️ অনেকবার চেষ্টা করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।";
+
+case "auth/network-request-failed":
+
+return "❌ Internet connection সমস্যা হয়েছে।";
+
+case "auth/operation-not-allowed":
+
+return "❌ Firebase-এ Email/Password Login চালু করা নেই।";
+
+default:
+
+return "❌ Login failed: " +
+(error.message || error.code || "Unknown error");
+
+}
+
+}
+
+
 /* ADMIN LOGIN */
 
 document
@@ -395,23 +551,37 @@ document
 .getElementById("adminPassword")
 .value;
 
-
-const errorBox =
-document
-.getElementById("loginError");
-
-errorBox.className="error";
-errorBox.innerText="";
+showError("");
 
 
-if(!email || !password){
+if(!email){
 
-errorBox.innerText=
-"Please enter email and password.";
+showError(
+"❌ Admin Email দিন।"
+);
 
 return;
 
 }
+
+if(!password){
+
+showError(
+"❌ Password দিন।"
+);
+
+return;
+
+}
+
+
+const button =
+document.getElementById("loginBtn");
+
+button.disabled = true;
+
+button.innerText =
+"Logging in...";
 
 
 try{
@@ -422,6 +592,7 @@ auth,
 email,
 password
 );
+
 
 const uid =
 credential.user.uid;
@@ -439,38 +610,37 @@ if(!adminDoc.exists()){
 
 await signOut(auth);
 
-errorBox.innerText=
-"This account is not an admin.";
+showError(
+"❌ Login হয়েছে, কিন্তু এই account Admin হিসেবে অনুমোদিত নয়।"
+);
+
+button.disabled = false;
+
+button.innerText =
+"Login";
 
 return;
 
 }
 
 
-/* SHOW ADMIN PANEL */
+/* SHOW ADMIN */
 
-document
-.getElementById("loginBox")
-.style.display="none";
-
-document
-.getElementById("adminPanel")
-.style.display="block";
-
-document
-.getElementById("logoutBtn")
-.style.display="block";
-
-
-loadUsers();
+showAdminPanel();
 
 
 }catch(error){
 
-console.error(error);
+showError(
+firebaseError(error)
+);
 
-errorBox.innerText=
-"Login failed. Please check your email and password.";
+}finally{
+
+button.disabled = false;
+
+button.innerText =
+"Login";
 
 }
 
@@ -489,18 +659,12 @@ document
 .value
 .trim();
 
-const errorBox =
-document
-.getElementById("loginError");
-
-errorBox.className="error";
-errorBox.innerText="";
-
 
 if(!email){
 
-errorBox.innerText=
-"Please enter your admin email first.";
+showError(
+"❌ প্রথমে আপনার Admin Email লিখুন।"
+);
 
 return;
 
@@ -514,45 +678,43 @@ auth,
 email
 );
 
-errorBox.className="success";
-
-errorBox.innerText=
-"Password reset email sent. Please check your email.";
+showSuccess(
+"✅ Password reset email পাঠানো হয়েছে। আপনার email inbox এবং Spam/Junk folder দেখুন।"
+);
 
 }catch(error){
 
-console.error(error);
-
-errorBox.className="error";
-
-if(
-error.code ===
-"auth/user-not-found"
-){
-
-errorBox.innerText=
-"No account found with this email.";
-
-}
-else if(
-error.code ===
-"auth/invalid-email"
-){
-
-errorBox.innerText=
-"Please enter a valid email.";
-
-}
-else{
-
-errorBox.innerText=
-"Could not send reset email. Please try again.";
-
-}
+showError(
+firebaseError(error)
+);
 
 }
 
 };
+
+
+/* SHOW ADMIN PANEL */
+
+function showAdminPanel(){
+
+document
+.getElementById("loginBox")
+.style.display =
+"none";
+
+document
+.getElementById("adminPanel")
+.style.display =
+"block";
+
+document
+.getElementById("logoutBtn")
+.style.display =
+"block";
+
+loadUsers();
+
+}
 
 
 /* LOAD USERS */
@@ -562,12 +724,13 @@ async function loadUsers(){
 const table =
 document.getElementById("userTable");
 
-table.innerHTML="";
+table.innerHTML =
+'<tr><td colspan="5" class="loading">Loading users...</td></tr>';
 
 
-let totalUsers=0;
-let activePlans=0;
-let totalTasks=0;
+let totalUsers = 0;
+let activePlans = 0;
+let totalTasks = 0;
 
 
 try{
@@ -578,6 +741,9 @@ collection(db,"users")
 );
 
 
+table.innerHTML = "";
+
+
 snapshot.forEach(function(userDoc){
 
 const data =
@@ -586,8 +752,13 @@ userDoc.data();
 totalUsers++;
 
 
-if(data.plan){
+if(
+data.plan &&
+Number(data.plan) > 0
+){
+
 activePlans++;
+
 }
 
 
@@ -617,11 +788,8 @@ id="plan-${userDoc.id}"
 >
 
 <option value="0">No Plan</option>
-
 <option value="1">Plan 1</option>
-
 <option value="2">Plan 2</option>
-
 <option value="3">Plan 3</option>
 
 </select>
@@ -700,12 +868,23 @@ document
 totalTasks;
 
 
+if(totalUsers === 0){
+
+table.innerHTML =
+'<tr><td colspan="5" class="loading">No users found.</td></tr>';
+
+}
+
+
 }catch(error){
 
 console.error(error);
 
+table.innerHTML =
+'<tr><td colspan="5" class="error">Users load করা যায়নি।</td></tr>';
+
 alert(
-"Could not load users: "+
+"Could not load users:\n" +
 error.message
 );
 
@@ -736,7 +915,7 @@ document
 if(tasks < 0 || tasks > 10){
 
 alert(
-"Tasks must be between 0 and 10."
+"Tasks অবশ্যই 0 থেকে 10 এর মধ্যে হতে হবে।"
 );
 
 return;
@@ -766,7 +945,7 @@ merge:true
 
 
 alert(
-"User updated successfully!"
+"✅ User successfully updated!"
 );
 
 loadUsers();
@@ -777,7 +956,7 @@ loadUsers();
 console.error(error);
 
 alert(
-"Update failed: "+
+"❌ Update failed:\n" +
 error.message
 );
 
@@ -791,10 +970,15 @@ error.message
 function escapeHTML(value){
 
 return String(value)
+
 .replace(/&/g,"&amp;")
+
 .replace(/</g,"&lt;")
+
 .replace(/>/g,"&gt;")
+
 .replace(/"/g,"&quot;")
+
 .replace(/'/g,"&#039;");
 
 }
@@ -806,19 +990,36 @@ document
 .getElementById("logoutBtn")
 .onclick = async function(){
 
+try{
+
 await signOut(auth);
+
+}catch(error){
+
+console.error(error);
+
+}
+
 
 document
 .getElementById("adminPanel")
-.style.display="none";
+.style.display =
+"none";
 
 document
 .getElementById("loginBox")
-.style.display="block";
+.style.display =
+"block";
 
 document
 .getElementById("logoutBtn")
-.style.display="none";
+.style.display =
+"none";
+
+document
+.getElementById("adminPassword")
+.value =
+"";
 
 };
 
@@ -835,6 +1036,7 @@ return;
 
 }
 
+
 try{
 
 const adminDoc =
@@ -845,25 +1047,20 @@ doc(db,"admins",firebaseUser.uid)
 
 if(adminDoc.exists()){
 
-document
-.getElementById("loginBox")
-.style.display="none";
+showAdminPanel();
 
-document
-.getElementById("adminPanel")
-.style.display="block";
+}else{
 
-document
-.getElementById("logoutBtn")
-.style.display="block";
-
-loadUsers();
+await signOut(auth);
 
 }
 
 }catch(error){
 
-console.error(error);
+console.error(
+"Admin check error:",
+error
+);
 
 }
 
@@ -873,3 +1070,4 @@ console.error(error);
 
 </body>
 </html>
+```
