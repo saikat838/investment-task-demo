@@ -1,12 +1,347 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Task Platform</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Task Income Platform</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+body{
+  background:#f4f7fb;
+  color:#172033;
+}
+header{
+  background:#102a56;
+  color:#fff;
+  padding:16px 7%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  font-size:22px;
+  font-weight:bold;
+}
+nav a{
+  color:white;
+  text-decoration:none;
+  margin-left:18px;
+}
+.hero{
+  background:linear-gradient(135deg,#102a56,#2563eb);
+  color:#fff;
+  text-align:center;
+  padding:70px 20px;
+}
+.hero h1{
+  font-size:38px;
+  margin-bottom:15px;
+}
+.hero p{
+  font-size:18px;
+  margin-bottom:25px;
+}
+.btn{
+  display:inline-block;
+  background:#fff;
+  color:#102a56;
+  padding:13px 25px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+  border:none;
+  cursor:pointer;
+}
+section{
+  padding:55px 7%;
+}
+.section-title{
+  text-align:center;
+  margin-bottom:30px;
+  font-size:30px;
+}
+.plans{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:20px;
+}
+.plan{
+  background:#fff;
+  border-radius:14px;
+  padding:25px;
+  box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+.plan h3{
+  font-size:23px;
+  margin-bottom:12px;
+  color:#102a56;
+}
+.plan p{
+  margin:9px 0;
+}
+.plan button{
+  width:100%;
+  margin-top:15px;
+  background:#2563eb;
+  color:#fff;
+  padding:12px;
+  border:0;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+}
+.dashboard{
+  max-width:850px;
+  margin:auto;
+}
+.dashboard-box{
+  background:#fff;
+  border-radius:15px;
+  padding:25px;
+  box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+.progress-bg{
+  width:100%;
+  height:15px;
+  background:#e5e7eb;
+  border-radius:20px;
+  overflow:hidden;
+  margin:15px 0;
+}
+.progress{
+  height:100%;
+  width:20%;
+  background:#2563eb;
+}
+.tasks{
+  margin-top:25px;
+}
+.task{
+  padding:15px;
+  margin:10px 0;
+  border-radius:8px;
+  background:#f8fafc;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.task button{
+  background:#16a34a;
+  color:#fff;
+  border:0;
+  padding:8px 14px;
+  border-radius:6px;
+  cursor:pointer;
+}
+.locked button{
+  background:#dc2626;
+}
+.verification{
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  padding:25px;
+  border-radius:12px;
+  margin-top:25px;
+  text-align:center;
+  display:none;
+}
+.contact-btn{
+  display:inline-block;
+  margin-top:15px;
+  padding:12px 22px;
+  background:#16a34a;
+  color:white;
+  border-radius:8px;
+  text-decoration:none;
+}
+footer{
+  background:#102a56;
+  color:#fff;
+  text-align:center;
+  padding:25px;
+}
+@media(max-width:600px){
+  header{
+    padding:14px 5%;
+  }
+  nav a{
+    margin-left:8px;
+    font-size:14px;
+  }
+  .hero h1{
+    font-size:28px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <h1>Welcome to Task Platform</h1>
-  <p>Your dashboard and tasks will appear here.</p>
+
+<header>
+  <div class="logo">TASK PLATFORM</div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#plans">Plans</a>
+    <a href="#dashboard">Dashboard</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <h1>Complete Tasks & Track Your Progress</h1>
+  <p>A demo platform for managing plans, tasks and verification.</p>
+  <a href="#plans" class="btn">View Plans</a>
+</section>
+
+<section id="plans">
+  <h2 class="section-title">Available Plans</h2>
+
+  <div class="plans">
+
+    <div class="plan">
+      <h3>Plan 1</h3>
+      <p><b>Package:</b> Starter</p>
+      <p><b>Tasks:</b> 10 Tasks</p>
+      <p><b>Validity:</b> 1 Month</p>
+      <button onclick="selectPlan(1)">Select Plan</button>
+    </div>
+
+    <div class="plan">
+      <h3>Plan 2</h3>
+      <p><b>Package:</b> Advanced</p>
+      <p><b>Tasks:</b> 10 Tasks</p>
+      <p><b>Validity:</b> 1 Month</p>
+      <button onclick="selectPlan(2)">Select Plan</button>
+    </div>
+
+    <div class="plan">
+      <h3>Plan 3</h3>
+      <p><b>Package:</b> Premium</p>
+      <p><b>Tasks:</b> 10 Tasks</p>
+      <p><b>Validity:</b> 2 Months</p>
+      <button onclick="selectPlan(3)">Select Plan</button>
+    </div>
+
+  </div>
+</section>
+
+<section id="dashboard">
+  <h2 class="section-title">My Dashboard</h2>
+
+  <div class="dashboard">
+    <div class="dashboard-box">
+      <h3 id="planName">No Plan Selected</h3>
+      <p id="taskText">Select a plan to start tasks.</p>
+
+      <div class="progress-bg">
+        <div class="progress" id="progressBar"></div>
+      </div>
+
+      <div class="tasks" id="tasks"></div>
+
+      <div class="verification" id="verificationBox">
+        <h3>🔐 Verification Required</h3>
+        <p>Please contact Customer Service for verification details.</p>
+        <a href="#" class="contact-btn">💬 Contact Customer Service</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Task Platform — Demo Website</p>
+</footer>
+
+<script>
+let selectedPlan = 0;
+let completedTasks = 0;
+
+function selectPlan(plan){
+  selectedPlan = plan;
+  completedTasks = 0;
+
+  document.getElementById("planName").innerText = "Plan " + plan + " Selected";
+  document.getElementById("taskText").innerText = "Complete 10 tasks to track your progress.";
+
+  document.getElementById("verificationBox").style.display = "none";
+
+  renderTasks();
+  document.getElementById("dashboard").scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
+function renderTasks(){
+  const taskContainer = document.getElementById("tasks");
+  taskContainer.innerHTML = "";
+
+  for(let i=1;i<=10;i++){
+
+    let task = document.createElement("div");
+    task.className = "task";
+
+    let title = document.createElement("span");
+
+    if(selectedPlan === 3 && i === 3){
+      title.innerHTML = "Task 3 — 🔐 Verification Required";
+    }else{
+      title.innerHTML = "Task " + i;
+    }
+
+    let button = document.createElement("button");
+
+    if(selectedPlan === 3 && i === 3 && completedTasks < 2){
+      button.innerText = "Locked";
+      button.disabled = true;
+      task.classList.add("locked");
+    }else if(i <= completedTasks){
+      button.innerText = "Completed";
+      button.disabled = true;
+    }else{
+      button.innerText = "Complete";
+      button.onclick = function(){
+        completeTask(i);
+      };
+    }
+
+    task.appendChild(title);
+    task.appendChild(button);
+    taskContainer.appendChild(task);
+  }
+
+  updateProgress();
+}
+
+function completeTask(taskNumber){
+
+  if(selectedPlan === 3 && taskNumber === 3){
+    document.getElementById("verificationBox").style.display = "block";
+    document.getElementById("verificationBox").scrollIntoView({
+      behavior:"smooth"
+    });
+    return;
+  }
+
+  if(taskNumber === completedTasks + 1){
+    completedTasks++;
+    renderTasks();
+  }
+}
+
+function updateProgress(){
+  let percentage = (completedTasks / 10) * 100;
+  document.getElementById("progressBar").style.width = percentage + "%";
+  document.getElementById("taskText").innerText =
+    "Completed: " + completedTasks + " / 10 Tasks";
+}
+</script>
+
 </body>
 </html>
