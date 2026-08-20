@@ -2,182 +2,48 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Task Income Platform</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Task Platform</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
-body{
-  background:#f4f7fb;
-  color:#172033;
-}
-header{
-  background:#102a56;
-  color:#fff;
-  padding:16px 7%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.logo{
-  font-size:22px;
-  font-weight:bold;
-}
-nav a{
-  color:white;
-  text-decoration:none;
-  margin-left:18px;
-}
-.hero{
-  background:linear-gradient(135deg,#102a56,#2563eb);
-  color:#fff;
-  text-align:center;
-  padding:70px 20px;
-}
-.hero h1{
-  font-size:38px;
-  margin-bottom:15px;
-}
-.hero p{
-  font-size:18px;
-  margin-bottom:25px;
-}
-.btn{
-  display:inline-block;
-  background:#fff;
-  color:#102a56;
-  padding:13px 25px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:bold;
-  border:none;
-  cursor:pointer;
-}
-section{
-  padding:55px 7%;
-}
-.section-title{
-  text-align:center;
-  margin-bottom:30px;
-  font-size:30px;
-}
-.plans{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:20px;
-}
-.plan{
-  background:#fff;
-  border-radius:14px;
-  padding:25px;
-  box-shadow:0 5px 18px rgba(0,0,0,.08);
-}
-.plan h3{
-  font-size:23px;
-  margin-bottom:12px;
-  color:#102a56;
-}
-.plan p{
-  margin:9px 0;
-}
-.plan button{
-  width:100%;
-  margin-top:15px;
-  background:#2563eb;
-  color:#fff;
-  padding:12px;
-  border:0;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:bold;
-}
-.dashboard{
-  max-width:850px;
-  margin:auto;
-}
-.dashboard-box{
-  background:#fff;
-  border-radius:15px;
-  padding:25px;
-  box-shadow:0 5px 18px rgba(0,0,0,.08);
-}
-.progress-bg{
-  width:100%;
-  height:15px;
-  background:#e5e7eb;
-  border-radius:20px;
-  overflow:hidden;
-  margin:15px 0;
-}
-.progress{
-  height:100%;
-  width:20%;
-  background:#2563eb;
-}
-.tasks{
-  margin-top:25px;
-}
-.task{
-  padding:15px;
-  margin:10px 0;
-  border-radius:8px;
-  background:#f8fafc;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.task button{
-  background:#16a34a;
-  color:#fff;
-  border:0;
-  padding:8px 14px;
-  border-radius:6px;
-  cursor:pointer;
-}
-.locked button{
-  background:#dc2626;
-}
-.verification{
-  background:#fff7ed;
-  border:1px solid #fed7aa;
-  padding:25px;
-  border-radius:12px;
-  margin-top:25px;
-  text-align:center;
-  display:none;
-}
-.contact-btn{
-  display:inline-block;
-  margin-top:15px;
-  padding:12px 22px;
-  background:#16a34a;
-  color:white;
-  border-radius:8px;
-  text-decoration:none;
-}
-footer{
-  background:#102a56;
-  color:#fff;
-  text-align:center;
-  padding:25px;
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f4f7fb;color:#172033}
+header{background:#102a56;color:#fff;padding:16px 7%;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:22px;font-weight:bold}
+nav a{color:#fff;text-decoration:none;margin-left:18px}
+.hero{background:linear-gradient(135deg,#102a56,#2563eb);color:#fff;text-align:center;padding:65px 20px}
+.hero h1{font-size:38px;margin-bottom:15px}
+.hero p{font-size:18px;margin-bottom:25px}
+.btn{border:0;background:#fff;color:#102a56;padding:12px 22px;border-radius:8px;font-weight:bold;cursor:pointer}
+section{padding:50px 7%}
+.title{text-align:center;margin-bottom:30px;font-size:30px}
+.card{background:#fff;border-radius:15px;padding:25px;box-shadow:0 5px 20px rgba(0,0,0,.08)}
+.auth{max-width:430px;margin:auto}
+input{width:100%;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:7px}
+.auth button,.plan button{width:100%;padding:12px;border:0;border-radius:7px;background:#2563eb;color:#fff;font-weight:bold;cursor:pointer;margin-top:10px}
+.auth p{text-align:center;margin-top:15px}
+.link{color:#2563eb;cursor:pointer}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.plan h3{color:#102a56;font-size:22px;margin-bottom:12px}
+.plan p{margin:8px 0}
+.dashboard{max-width:850px;margin:auto}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:20px}
+.stat{background:#fff;padding:20px;border-radius:12px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.stat strong{display:block;font-size:24px;color:#2563eb;margin-top:8px}
+.progress-bg{height:14px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin:15px 0}
+.progress{height:100%;width:0;background:#2563eb}
+.task{display:flex;justify-content:space-between;align-items:center;background:#f8fafc;padding:14px;margin:9px 0;border-radius:8px}
+.task button{background:#16a34a;color:white;border:0;padding:8px 13px;border-radius:6px;cursor:pointer}
+.task button:disabled{background:#94a3b8;cursor:not-allowed}
+.verify{display:none;background:#fff7ed;border:1px solid #fed7aa;padding:20px;border-radius:10px;margin-top:20px;text-align:center}
+.contact{display:inline-block;margin-top:12px;background:#16a34a;color:#fff;text-decoration:none;padding:11px 18px;border-radius:7px}
+.hidden{display:none}
+footer{background:#102a56;color:#fff;text-align:center;padding:25px}
 @media(max-width:600px){
-  header{
-    padding:14px 5%;
-  }
-  nav a{
-    margin-left:8px;
-    font-size:14px;
-  }
-  .hero h1{
-    font-size:28px;
-  }
+header{padding:14px 5%}
+nav a{font-size:13px;margin-left:7px}
+.hero h1{font-size:29px}
+.stats{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -185,162 +51,357 @@ footer{
 <body>
 
 <header>
-  <div class="logo">TASK PLATFORM</div>
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#plans">Plans</a>
-    <a href="#dashboard">Dashboard</a>
-  </nav>
+<div class="logo">TASK PLATFORM</div>
+<nav>
+<a href="#home">Home</a>
+<a href="#plans">Plans</a>
+<a href="#dashboard">Dashboard</a>
+<a href="#login" id="loginNav">Login</a>
+</nav>
 </header>
 
 <section class="hero" id="home">
-  <h1>Complete Tasks & Track Your Progress</h1>
-  <p>A demo platform for managing plans, tasks and verification.</p>
-  <a href="#plans" class="btn">View Plans</a>
+<h1>Task Platform</h1>
+<p>Manage your plans and complete your tasks.</p>
+<button class="btn" onclick="goTo('login')">Get Started</button>
 </section>
 
+<!-- LOGIN -->
+<section id="login">
+<h2 class="title">Login</h2>
+<div class="card auth">
+<input id="loginEmail" type="email" placeholder="Email">
+<input id="loginPassword" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<p>Don't have an account?
+<span class="link" onclick="showRegister()">Register</span></p>
+</div>
+</section>
+
+<!-- REGISTER -->
+<section id="register" class="hidden">
+<h2 class="title">Create Account</h2>
+<div class="card auth">
+<input id="regName" type="text" placeholder="Full Name">
+<input id="regEmail" type="email" placeholder="Email">
+<input id="regPassword" type="password" placeholder="Password">
+<button onclick="register()">Create Account</button>
+<p>Already have an account?
+<span class="link" onclick="showLogin()">Login</span></p>
+</div>
+</section>
+
+<!-- PLANS -->
 <section id="plans">
-  <h2 class="section-title">Available Plans</h2>
+<h2 class="title">Plans</h2>
 
-  <div class="plans">
+<div class="plans">
 
-    <div class="plan">
-      <h3>Plan 1</h3>
-      <p><b>Package:</b> Starter</p>
-      <p><b>Tasks:</b> 10 Tasks</p>
-      <p><b>Validity:</b> 1 Month</p>
-      <button onclick="selectPlan(1)">Select Plan</button>
-    </div>
+<div class="card plan">
+<h3>Plan 1</h3>
+<p>10 Tasks</p>
+<p>Validity: 1 Month</p>
+<button onclick="selectPlan(1)">Select Plan</button>
+</div>
 
-    <div class="plan">
-      <h3>Plan 2</h3>
-      <p><b>Package:</b> Advanced</p>
-      <p><b>Tasks:</b> 10 Tasks</p>
-      <p><b>Validity:</b> 1 Month</p>
-      <button onclick="selectPlan(2)">Select Plan</button>
-    </div>
+<div class="card plan">
+<h3>Plan 2</h3>
+<p>10 Tasks</p>
+<p>Validity: 1 Month</p>
+<button onclick="selectPlan(2)">Select Plan</button>
+</div>
 
-    <div class="plan">
-      <h3>Plan 3</h3>
-      <p><b>Package:</b> Premium</p>
-      <p><b>Tasks:</b> 10 Tasks</p>
-      <p><b>Validity:</b> 2 Months</p>
-      <button onclick="selectPlan(3)">Select Plan</button>
-    </div>
+<div class="card plan">
+<h3>Plan 3</h3>
+<p>10 Tasks</p>
+<p>Validity: 2 Months</p>
+<button onclick="selectPlan(3)">Select Plan</button>
+</div>
 
-  </div>
+</div>
 </section>
 
+<!-- DASHBOARD -->
 <section id="dashboard">
-  <h2 class="section-title">My Dashboard</h2>
+<h2 class="title">My Dashboard</h2>
 
-  <div class="dashboard">
-    <div class="dashboard-box">
-      <h3 id="planName">No Plan Selected</h3>
-      <p id="taskText">Select a plan to start tasks.</p>
+<div class="dashboard">
 
-      <div class="progress-bg">
-        <div class="progress" id="progressBar"></div>
-      </div>
+<div class="stats">
+<div class="stat">
+User
+<strong id="userName">Guest</strong>
+</div>
+<div class="stat">
+Plan
+<strong id="currentPlan">None</strong>
+</div>
+<div class="stat">
+Tasks
+<strong id="taskCount">0 / 10</strong>
+</div>
+</div>
 
-      <div class="tasks" id="tasks"></div>
+<div class="card">
+<h3 id="dashboardTitle">Select a plan</h3>
 
-      <div class="verification" id="verificationBox">
-        <h3>🔐 Verification Required</h3>
-        <p>Please contact Customer Service for verification details.</p>
-        <a href="#" class="contact-btn">💬 Contact Customer Service</a>
-      </div>
+<div class="progress-bg">
+<div class="progress" id="progressBar"></div>
+</div>
 
-    </div>
-  </div>
+<div id="tasks"></div>
+
+<div class="verify" id="verifyBox">
+<h3>🔐 Verification Required</h3>
+<p>
+Your account requires verification before continuing.
+Please contact Customer Service for the verification process.
+</p>
+
+<a class="contact" href="#" onclick="contactService()">
+💬 Contact Customer Service
+</a>
+</div>
+
+</div>
+</div>
 </section>
 
 <footer>
-  <p>© 2026 Task Platform — Demo Website</p>
+<p>© 2026 Task Platform — Demo Platform</p>
 </footer>
 
 <script>
-let selectedPlan = 0;
-let completedTasks = 0;
+
+let user=null;
+let selectedPlan=0;
+let completed=0;
+
+function goTo(id){
+document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+
+function showRegister(){
+document.getElementById("login").classList.add("hidden");
+document.getElementById("register").classList.remove("hidden");
+goTo("register");
+}
+
+function showLogin(){
+document.getElementById("register").classList.add("hidden");
+document.getElementById("login").classList.remove("hidden");
+goTo("login");
+}
+
+function register(){
+
+let name=document.getElementById("regName").value.trim();
+let email=document.getElementById("regEmail").value.trim();
+let password=document.getElementById("regPassword").value;
+
+if(!name || !email || !password){
+alert("Please fill in all fields.");
+return;
+}
+
+user={name,email,password,plan:0,tasks:0};
+
+localStorage.setItem("demoUser",JSON.stringify(user));
+
+alert("Account created successfully!");
+
+loginUser();
+}
+
+function login(){
+
+let email=document.getElementById("loginEmail").value.trim();
+let password=document.getElementById("loginPassword").value;
+
+let saved=localStorage.getItem("demoUser");
+
+if(!saved){
+alert("No demo account found. Please register first.");
+return;
+}
+
+let data=JSON.parse(saved);
+
+if(data.email!==email || data.password!==password){
+alert("Incorrect email or password.");
+return;
+}
+
+user=data;
+loginUser();
+}
+
+function loginUser(){
+
+document.getElementById("userName").innerText=user.name;
+document.getElementById("loginNav").innerText="Logout";
+document.getElementById("loginNav").onclick=logout;
+
+if(user.plan){
+selectedPlan=user.plan;
+completed=user.tasks;
+renderTasks();
+}
+
+goTo("dashboard");
+}
+
+function logout(){
+
+user=null;
+selectedPlan=0;
+completed=0;
+
+document.getElementById("userName").innerText="Guest";
+document.getElementById("currentPlan").innerText="None";
+document.getElementById("taskCount").innerText="0 / 10";
+document.getElementById("tasks").innerHTML="";
+document.getElementById("progressBar").style.width="0%";
+document.getElementById("verifyBox").style.display="none";
+
+document.getElementById("loginNav").innerText="Login";
+document.getElementById("loginNav").onclick=function(){
+goTo("login");
+};
+
+goTo("login");
+}
 
 function selectPlan(plan){
-  selectedPlan = plan;
-  completedTasks = 0;
 
-  document.getElementById("planName").innerText = "Plan " + plan + " Selected";
-  document.getElementById("taskText").innerText = "Complete 10 tasks to track your progress.";
+if(!user){
+alert("Please login or create an account first.");
+goTo("login");
+return;
+}
 
-  document.getElementById("verificationBox").style.display = "none";
+selectedPlan=plan;
+completed=0;
 
-  renderTasks();
-  document.getElementById("dashboard").scrollIntoView({
-    behavior:"smooth"
-  });
+user.plan=plan;
+user.tasks=0;
+
+saveUser();
+
+renderTasks();
+
+goTo("dashboard");
 }
 
 function renderTasks(){
-  const taskContainer = document.getElementById("tasks");
-  taskContainer.innerHTML = "";
 
-  for(let i=1;i<=10;i++){
+document.getElementById("currentPlan").innerText=
+"Plan "+selectedPlan;
 
-    let task = document.createElement("div");
-    task.className = "task";
+document.getElementById("dashboardTitle").innerText=
+"Plan "+selectedPlan+" — 10 Tasks";
 
-    let title = document.createElement("span");
+document.getElementById("taskCount").innerText=
+completed+" / 10";
 
-    if(selectedPlan === 3 && i === 3){
-      title.innerHTML = "Task 3 — 🔐 Verification Required";
-    }else{
-      title.innerHTML = "Task " + i;
-    }
+let box=document.getElementById("tasks");
+box.innerHTML="";
 
-    let button = document.createElement("button");
+document.getElementById("verifyBox").style.display="none";
 
-    if(selectedPlan === 3 && i === 3 && completedTasks < 2){
-      button.innerText = "Locked";
-      button.disabled = true;
-      task.classList.add("locked");
-    }else if(i <= completedTasks){
-      button.innerText = "Completed";
-      button.disabled = true;
-    }else{
-      button.innerText = "Complete";
-      button.onclick = function(){
-        completeTask(i);
-      };
-    }
+for(let i=1;i<=10;i++){
 
-    task.appendChild(title);
-    task.appendChild(button);
-    taskContainer.appendChild(task);
-  }
+let row=document.createElement("div");
+row.className="task";
 
-  updateProgress();
+let title=document.createElement("span");
+
+if(selectedPlan===3 && i===3){
+title.innerText="Task 3 — 🔐 Verification Required";
+}else{
+title.innerText="Task "+i;
 }
 
-function completeTask(taskNumber){
+let button=document.createElement("button");
 
-  if(selectedPlan === 3 && taskNumber === 3){
-    document.getElementById("verificationBox").style.display = "block";
-    document.getElementById("verificationBox").scrollIntoView({
-      behavior:"smooth"
-    });
-    return;
-  }
+if(i<=completed){
 
-  if(taskNumber === completedTasks + 1){
-    completedTasks++;
-    renderTasks();
-  }
+button.innerText="Completed";
+button.disabled=true;
+
+}else if(selectedPlan===3 && i===3){
+
+button.innerText="Verify";
+button.onclick=function(){
+showVerification();
+};
+
+}else{
+
+button.innerText="Complete";
+
+button.onclick=function(){
+completeTask(i);
+};
+
+}
+
+row.appendChild(title);
+row.appendChild(button);
+box.appendChild(row);
+}
+
+updateProgress();
+}
+
+function completeTask(number){
+
+if(number!==completed+1){
+alert("Please complete the previous task first.");
+return;
+}
+
+completed++;
+
+user.tasks=completed;
+
+saveUser();
+
+renderTasks();
+}
+
+function showVerification(){
+
+document.getElementById("verifyBox").style.display="block";
+
+document.getElementById("verifyBox").scrollIntoView({
+behavior:"smooth"
+});
+}
+
+function contactService(){
+
+alert("Customer Service: Please add your official support contact here.");
 }
 
 function updateProgress(){
-  let percentage = (completedTasks / 10) * 100;
-  document.getElementById("progressBar").style.width = percentage + "%";
-  document.getElementById("taskText").innerText =
-    "Completed: " + completedTasks + " / 10 Tasks";
+
+let percent=(completed/10)*100;
+
+document.getElementById("progressBar").style.width=
+percent+"%";
+
+document.getElementById("taskCount").innerText=
+completed+" / 10";
 }
+
+function saveUser(){
+
+if(user){
+localStorage.setItem("demoUser",JSON.stringify(user));
+}
+}
+
 </script>
 
 </body>
